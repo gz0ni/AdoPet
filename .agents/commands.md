@@ -16,7 +16,7 @@ Run before claiming work is done:
 
 ```bash
 cd core && go vet ./... && go test ./... && go build ./...
-cd core && golangci-lint run              # not installed locally yet
+cd core && golangci-lint run              # v2.15.0, in $(go env GOPATH)/bin
 cd settings && flutter analyze && flutter test
 ```
 
@@ -25,10 +25,18 @@ cd settings && flutter analyze && flutter test
 ```bash
 cd settings && flutter build windows --debug     # verified
 cd settings && flutter build windows --release
-cd core && go build -ldflags "-H=windowsgui -s -w" -o pet-core.exe ./cmd/pet-core   # not verified
+cd core && go build -ldflags "-H=windowsgui -s -w" -o pet-core.exe ./cmd/pet-core   # verified, ~5.3 MB
 ```
 
 Packaging (Inno Setup, dmg, `lipo` universal binary) is not set up yet, see [plan.md](plan.md) §6.
+
+## Measuring pet-core
+
+```powershell
+$p = Start-Process .\pet-core.exe -PassThru; Start-Sleep 5; $p.Refresh(); $p.WorkingSet64/1MB
+```
+
+`GODEBUG=gctrace=1` shows the Go heap. Cross-check the macOS backend compiles: `GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go vet ./...`.
 
 ## CI
 
@@ -36,5 +44,5 @@ Packaging (Inno Setup, dmg, `lipo` universal binary) is not set up yet, see [pla
 
 ## Tests
 
-- Go: none yet. Planned: state machine, config, sprite slicing, server auth (`httptest`).
+- Go: `internal/config` (defaults, merge, unknown keys, atomic save), `internal/sprite` (pet.json, frame rects, frame timing, scaling), `internal/window` (anchor placement, BGRA blit, Win32 screen ↔ DIP conversion). Planned: state machine, server auth (`httptest`).
 - Flutter: `settings/test/pages_test.dart` (page titles). Planned: config repo round-trip, event-map editor, hook-settings merge.

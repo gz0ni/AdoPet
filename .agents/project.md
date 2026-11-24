@@ -1,6 +1,6 @@
 # Project Context
 
-Claude Pet (AdoPet): a lightweight desktop pet (Chibi Ado) that reacts to Claude Code activity. Two processes: **pet-core** (Go) is always running, draws the pet, owns the tray icon and global hotkeys, and receives events from Claude Code hooks over a local HTTP API; **settings** (Flutter) is started on demand from the tray and exits when closed. Scope: Claude Code in the terminal and the Desktop Code tab (hooks from `~/.claude/settings.json`); Claude chat exposes no events, so the pet is decorative there. Full plan: [plan.md](plan.md).
+Claude Pet (AdoPet): a lightweight desktop pet (Chibi Ado) that reacts to Claude Code activity. Two processes: **pet-core** (Go) is always running, draws the pet, owns the tray icon and global hotkeys, and receives events from Claude Code hooks over local HTTP on a unix socket; **settings** (Flutter) is started on demand from the tray and exits when closed. Scope: Claude Code in the terminal and the Desktop Code tab (hooks from `~/.claude/settings.json`); Claude chat exposes no events, so the pet is decorative there. Full plan: [plan.md](plan.md).
 
 ## Platforms
 
@@ -8,9 +8,9 @@ Windows 10/11 and macOS 12+.
 
 ## Toolchain
 
-- core: Go 1.26.5 (`core/go.mod`), Ebiten v2 (planned); cgo required on macOS.
+- core: Go 1.26.5 (`core/go.mod`); Win32 via `x/sys/windows` on Windows, Ebiten v2.10.6 on macOS (cgo may be required there).
 - settings: Flutter 3.44.6 stable, Dart SDK ^3.12.2, pub.
-- Hooks: POSIX sh + curl (macOS), PowerShell (Windows).
+- Hooks: POSIX sh + curl (macOS), PowerShell + built-in `curl.exe` (Windows 10 1803+), both with `--unix-socket`.
 - CI: GitHub Actions, matrix `windows-latest` / `macos-latest`.
 - Lint: `go vet`, `golangci-lint` (v2 config), `flutter analyze`.
 
@@ -22,8 +22,12 @@ Windows 10/11 and macOS 12+.
 
 ## Dependencies
 
-core (planned, not yet in go.mod):
-- `github.com/hajimehoshi/ebiten/v2`: transparent floating window, rendering.
+core (added):
+- `github.com/hajimehoshi/ebiten/v2` v2.10.6: pet window on macOS (not used on Windows).
+- `golang.org/x/sys` v0.50.0: Win32 calls for the Windows pet window.
+- `golang.org/x/image` v0.48.0: CatmullRom pre-scaling of the sheet.
+
+core (planned):
 - `fyne.io/systray`: tray / menu bar (`RunWithExternalLoop`).
 - `golang.design/x/hotkey`: global hotkeys.
 - `github.com/fsnotify/fsnotify`: watch config.json.
@@ -41,4 +45,4 @@ settings (added):
 
 ## Status
 
-M0 (skeleton) done: repo layout, Go module with stub packages, embedded assets, hook scripts and snippets, Flutter app with platform-split navigation, CI workflow. M1 (pet on screen) not started.
+M0 (skeleton) done: repo layout, Go module with stub packages, embedded assets, hook scripts and snippets, Flutter app with platform-split navigation, CI workflow. M1 (pet on screen) implemented on Windows: idle loop in a transparent, undecorated, always-on-top window without a taskbar button, drag, position saved to config.json. Windows uses an own Win32 layered window (no GPU): WS ≈ 18 MB, CPU ≈ 0%, binary 5.3 MB; drag checked by the user on 2026-11-24. macOS uses Ebiten, not run yet.

@@ -22,7 +22,7 @@ claude-pet/
 │   │   ├── config/          # load/save/watch config.json, defaults, schema version
 │   │   ├── sprite/          # spritesheet loading, frame slicing, animation player
 │   │   ├── state/           # event → pet state machine
-│   │   ├── server/          # HTTP API on 127.0.0.1
+│   │   ├── server/          # HTTP API over a unix socket
 │   │   ├── window/          # Ebiten game loop, transparent window, drag, click-through
 │   │   ├── tray/            # tray / menu-bar icon and menu
 │   │   ├── hotkeys/         # global hotkeys
@@ -109,6 +109,7 @@ Memory: decode the sheet once (≈14 MB RGBA at full size). Pre-scale to the con
 - stdlib `net/http`, `encoding/json`, `embed`, `log/slog`.
 
 ### Window
+- Windows (decided 2026-11-24): own Win32 layered window (`UpdateLayeredWindow` + DIB, no GPU), see `project-decisions.md`. The Ebiten notes below apply to macOS.
 - Ebiten options: `ScreenTransparent: true`, `WindowDecorated(false)`, `WindowFloating(true)`, `SetRunnableOnUnfocused(true)`, `SetTPS` low (e.g. 30), `SetVsyncEnabled(false)`.
 - Skip redraw when the frame hasn't changed (`ebiten.SetScreenClearedEveryFrame(false)` + dirty flag) to keep CPU near 0.
 - Drag to move (left button); position saved to config.
@@ -133,7 +134,7 @@ Priority-based; higher priority wins, transient states return to the base state.
 - Track sessions by `session_id` so several Claude Code sessions don't fight; show the most urgent state across sessions.
 - Every mapping is overridable from config (`eventMap`), and disabled animations fall back to `idle`.
 
-### HTTP API (`internal/server`), bound to `127.0.0.1` only
+### HTTP API (`internal/server`) over a unix domain socket
 | Method | Path | Purpose |
 |---|---|---|
 | `POST` | `/event` | hook payload (raw Claude Code hook JSON + `event` name) |
@@ -142,8 +143,12 @@ Priority-based; higher priority wins, transient states return to the base state.
 | `GET` | `/state` | current state, sessions, version (for settings UI) |
 | `GET` | `/health` | liveness |
 
-- Port from config (default e.g. `47821`); write the actual port to `<dataDir>/port` so hooks/settings can find it.
-- Require a random token (`<dataDir>/token`, created on first run) in `X-Pet-Token`. Reject everything else.
+- Transport: HTTP over an AF_UNIX socket at `<dataDir>/pet.sock` on both OS (`net.Listen("unix", …)` + `http.Serve`). Windows 10 1803+ supports AF_UNIX. No TCP port, no `port` file, no token.
+- Access control comes from the OS: the data dir is per-user (`0700` on macOS, user-only ACL of `%APPDATA%` on Windows), the socket file is `0600`. Other users, other machines, and browser pages cannot reach it.
+- Startup: if `pet.sock` exists, try to connect. Success → another pet-core is running, exit (single instance for free). Failure → stale file, remove it and listen. Remove the socket on exit.
+- Path limit: `sun_path` is 108 bytes on Windows, 104 on macOS. Check the length at startup and log a clear error; a long user profile path is the realistic failure.
+- Clients: hooks use `curl --unix-socket` (curl in Windows has `UnixSockets` built in, macOS curl too); settings use Dart `HttpClient` with `connectionFactory` → `Socket.startConnect(InternetAddress(path, type: InternetAddressType.unix), 0)`. The URL host is a dummy `localhost`.
+- Verified on Windows 11 (2026-11-24): Go server on AF_UNIX, `curl.exe --unix-socket` POST, Dart raw `Socket` and `HttpClient` both got `200`. macOS still to check in M2.
 - Hook must never block Claude: handler returns `204` immediately and processes the event asynchronously.
 
 ### Tray / menu
@@ -171,8 +176,7 @@ Location: Windows `%APPDATA%\ClaudePet\config.json`, macOS `~/Library/Applicatio
   "behavior": { "wander": false, "followCursor": true, "idleAfterSec": 120 },
   "sound": { "onWaiting": true, "volume": 0.6 },
   "hotkeys": { "toggle": "Ctrl+Alt+P", "dnd": "Ctrl+Alt+D", "clickThrough": "Ctrl+Alt+T", "settings": "Ctrl+Alt+Comma" },
-  "autostart": true,
-  "server": { "port": 47821 }
+  "autostart": true
 }
 ```
 - Unknown keys preserved; missing keys filled from defaults; atomic write (temp file + rename).
@@ -191,10 +195,10 @@ Location: Windows `%APPDATA%\ClaudePet\config.json`, macOS `~/Library/Applicatio
 ## 4. Claude Code hooks
 
 `hooks/pet-hook.sh`:
-- Reads hook JSON from stdin, reads port + token from the data dir, `curl -s -m 1 -X POST` to `/event`, always `exit 0`.
+- Reads hook JSON from stdin, `curl -s -m 1 --unix-socket "<dataDir>/pet.sock" --data-binary @- "http://localhost/event?event=<Name>"`, always `exit 0`.
 - Never prints to stdout (stdout from some hooks is fed back to Claude).
 
-`hooks/pet-hook.ps1`: same with `Invoke-RestMethod -TimeoutSec 1`, wrapped in `try {} catch {}`.
+`hooks/pet-hook.ps1`: same through `curl.exe --unix-socket` (`Invoke-RestMethod` has no unix socket support), wrapped in `try {} catch {}`.
 
 `settings.snippet.json` (merged into `~/.claude/settings.json`, user-level so terminal and Desktop Code tab share it):
 
@@ -271,7 +275,7 @@ Both binaries ship together; core finds settings next to itself.
 
 1. **M0: skeleton.** Repo layout, Go module, Flutter project, README, lint (`golangci-lint`, `flutter analyze`).
 2. **M1: pet on screen.** Embedded sheet, `idle` loop, transparent undecorated floating window, drag, saved position. Check RSS.
-3. **M2: events.** HTTP server + token, state machine, hook scripts, manual test with `curl`, then real Claude Code session.
+3. **M2: events.** HTTP server on `<dataDir>/pet.sock` (no port, no token), stale-socket check and single instance, state machine with all animations, hook scripts on `curl --unix-socket`, `CoreClient` over the socket, manual test with `curl`, then a real Claude Code session. Check AF_UNIX on macOS and socket removal on exit on Windows.
 4. **M3: tray + hotkeys + autostart.**
 5. **M4: settings app.** Config repo, General + Animations pages on both UI kits, `/preview`, `/reload`.
 6. **M5: Claude events page + hook installer.**

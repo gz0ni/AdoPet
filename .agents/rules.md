@@ -20,7 +20,7 @@
 ## State and Persistence
 
 - Config: `config.json` in `%APPDATA%\ClaudePet` / `~/Library/Application Support/ClaudePet` (`core/internal/paths`). Atomic writes, unknown keys preserved, missing keys filled from defaults.
-- `port` and `token` files in the same data dir, read by hooks and settings.
+- `pet.sock` (HTTP over a unix socket) in the same data dir; hooks and settings connect to it. No TCP port, no token.
 - Flutter state: ChangeNotifier or Riverpod — not chosen yet; pick one and record it.
 
 ## Testing
