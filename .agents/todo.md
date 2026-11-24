@@ -18,7 +18,6 @@ Task checklist. The agent maintains this file: creates items, marks them done, k
 
 ## Open
 
-- [~] M1: pet on screen — Windows and macOS done and checked by the user; branch `m1-pet-window` not merged yet
 - [ ] Handle `WM_DPICHANGED` in the Win32 backend (M7)
 - [x] M1 on macOS: build, transparency, idle loop, drag, saved position checked on Apple Silicon, macOS 27 (2026-11-24)
 - [x] Windows build after Ebiten removal: vet, test, golangci-lint pass; WS 18 MB, CPU ≈ 0.3% (2026-11-24)
@@ -38,6 +37,8 @@ Task checklist. The agent maintains this file: creates items, marks them done, k
 ## In Progress
 
 ## Done
+
+- [x] M1: pet on screen — Windows (Win32) and macOS (Cocoa) checked by the user, merged into `main` (2026-11-24)
 
 - [x] Cocoa `NSPanel` + `CALayer` backend on macOS replaces Ebiten; footprint 130 → 32 MB, CPU ≈ 0.1%, no Dock icon; Ebiten removed from `go.mod` (2026-11-24)
 - [x] golangci-lint v2.15.0 installed on the Mac, 0 issues (2026-11-24)
