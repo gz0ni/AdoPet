@@ -21,7 +21,7 @@ Task checklist. The agent maintains this file: creates items, marks them done, k
 - [~] M1: pet on screen — Windows and macOS done and checked by the user; branch `m1-pet-window` not merged yet
 - [ ] Handle `WM_DPICHANGED` in the Win32 backend (M7)
 - [x] M1 on macOS: build, transparency, idle loop, drag, saved position checked on Apple Silicon, macOS 27 (2026-11-24)
-- [ ] Run the Windows build on the Windows machine after Ebiten removal (`go mod tidy` changed `go.sum`)
+- [x] Windows build after Ebiten removal: vet, test, golangci-lint pass; WS 18 MB, CPU ≈ 0.3% (2026-11-24)
 - [ ] Handle `backingScaleFactor` changes on macOS (M7)
 - [ ] M2: events — HTTP over `<dataDir>/pet.sock` (no port/token), stale-socket check + single instance, state machine with all animations, hooks and `CoreClient` on the socket, `curl` test, then a real Claude Code session (server reads the event name from `?event=`); verify AF_UNIX on macOS
 - [ ] M3: tray + hotkeys + autostart (confirm systray `RunWithExternalLoop` with the Cocoa `[NSApp run]` loop on macOS early)
