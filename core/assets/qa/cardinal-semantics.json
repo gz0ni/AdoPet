@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "directions": [
+    {
+      "expected": "000 up",
+      "observed": "up",
+      "verdict": "pass",
+      "evidence": "Chin raised, cyan eye surfaces high on lifted frontal face, enlarged visible lower face."
+    },
+    {
+      "expected": "090 screen-right",
+      "observed": "screen-right",
+      "verdict": "pass",
+      "evidence": "Face projects to screen-right of head mass; far right eye narrowed, chin aims screen-right; seated torso frontal."
+    },
+    {
+      "expected": "180 down",
+      "observed": "down",
+      "verdict": "pass",
+      "evidence": "Head bowed, cyan eye surfaces low beneath bangs and heavily lowered lids; chin near ribbon."
+    },
+    {
+      "expected": "270 screen-left",
+      "observed": "screen-left",
+      "verdict": "pass",
+      "evidence": "Face projects screen-left of head mass; far left eye narrowed, chin points left; feet remain frontal."
+    }
+  ],
+  "notes": "All four inspected at native 192x208, no clipping or detached components. Final despill remains pending."
+}

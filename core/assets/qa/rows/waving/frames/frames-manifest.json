@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "chroma_key": {
+    "hex": "#FF00FF",
+    "rgb": [
+      255,
+      0,
+      255
+    ],
+    "threshold": 96.0
+  },
+  "rows": [
+    {
+      "state": "waving",
+      "frames": [
+        "/Users/gz0ni/Documents/Codex/2026-11-13/pets-plugin-work-pets-openai-curated-2/ado-run/qa/rows/waving/frames/waving/00.png",
+        "/Users/gz0ni/Documents/Codex/2026-11-13/pets-plugin-work-pets-openai-curated-2/ado-run/qa/rows/waving/frames/waving/01.png",
+        "/Users/gz0ni/Documents/Codex/2026-11-13/pets-plugin-work-pets-openai-curated-2/ado-run/qa/rows/waving/frames/waving/02.png",
+        "/Users/gz0ni/Documents/Codex/2026-11-13/pets-plugin-work-pets-openai-curated-2/ado-run/qa/rows/waving/frames/waving/03.png"
+      ],
+      "method": "components"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "reviewed_artifacts": ["contact-sheet.png", "jump-transition-review.png", "standard-previews", "rows/*/review.json"],
+  "identity": "Dark navy asymmetric bangs, cyan inner hair, large cyan oval eyes, black suit with white collar and cuffs stay consistent.",
+  "states": {
+    "idle": "Calm blink and breathing loop; seated feet remain planted.",
+    "running-right": "Rightward face and body with alternating arm and leg cadence.",
+    "running-left": "Leftward generated gait; preserves hairstyle identity without mirroring.",
+    "waving": "The same screen-right attached hand raises, waves and returns.",
+    "jumping": "Five stages rise visibly above the ground and return to the same baseline. Resting scale calibrated against jump; transition reviewed at native cell size.",
+    "failed": "Lids lower, head slumps, eyes close, then recover; no detached effects.",
+    "waiting": "Expectant clasped hands near chest/chin and a small head tilt ask for input.",
+    "running": "Seated focused thinking with hand at chin or temple; no foot-running.",
+    "review": "Inspection through lean, narrowed gaze, hand position, blink and nod."
+  },
+  "geometry": "Component extraction succeeded in every row; complete connected silhouettes, no frame clipping or copied guide marks. All frame transformations are shared within a row.",
+  "remaining": "Final edge despill and encoded-atlas gates are separate mandatory steps."
+}

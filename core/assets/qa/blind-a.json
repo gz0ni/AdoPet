@@ -1,0 +1,88 @@
+{
+  "pairs": [
+    {
+      "pair": "horizontal-1",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "A has its face projection and small nose mark toward the left, with more cheek on the right; B reverses the face projection and places the nose mark toward the right."
+    },
+    {
+      "pair": "horizontal-2",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "A's exposed face projects left beneath the fringe and its right ear is visible; B's face projects right with the left ear visible."
+    },
+    {
+      "pair": "horizontal-3",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "A exposes the left ear and a right-facing face edge, with the far eye on the right; B exposes the right ear and projects its face left."
+    },
+    {
+      "pair": "horizontal-4",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "A's eye surfaces and noseward face edge face right while the left ear is exposed; B has the opposite face edge and exposed right ear."
+    },
+    {
+      "pair": "horizontal-5",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "Despite lowered heads, A's face extends to the right of its exposed left ear; B's eye line and face extend left of its exposed right ear."
+    },
+    {
+      "pair": "horizontal-6",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "A's lowered face and eye surfaces extend toward the left, with the right ear exposed; B exposes the left ear and extends the face toward the right."
+    },
+    {
+      "pair": "horizontal-7",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "A's small visible face wedge is shifted left and its right eye is broader; B's face wedge is shifted right, with the left ear more exposed and the right eye foreshortened."
+    },
+    {
+      "pair": "vertical-1",
+      "A": "up",
+      "B": "down",
+      "reason": "A has a large open face below high, fully visible eyes and a lifted chin; B shows mostly the crown, with eyes compressed under the fringe and chin tucked toward the collar."
+    },
+    {
+      "pair": "vertical-2",
+      "A": "down",
+      "B": "up",
+      "reason": "A's crown dominates and the visible face is a shallow strip beneath low eyelids; B has fully visible eyes near the upper face and a long open cheek/chin area below."
+    },
+    {
+      "pair": "vertical-3",
+      "A": "down",
+      "B": "up",
+      "reason": "A's face is tucked under the fringe with narrow eye surfaces and little visible chin; B shows wide eyes, an extended face plane and lifted chin."
+    },
+    {
+      "pair": "vertical-4",
+      "A": "down",
+      "B": "up",
+      "reason": "A's eyes sit low under the fringe and its chin is close to the collar; B's wide eye surfaces and longer visible cheek plane indicate an elevated head."
+    },
+    {
+      "pair": "vertical-5",
+      "A": "down",
+      "B": "up",
+      "reason": "A shows a large crown and a thin face sliver with compressed eyelids; B shows a broad open face below fully visible eyes and a lifted chin."
+    },
+    {
+      "pair": "vertical-6",
+      "A": "up",
+      "B": "down",
+      "reason": "A has broad visible eye surfaces and an elevated chin with ample cheek below the eyes; B's head is tucked, eyes are narrowed beneath the fringe, and the face plane is shortened."
+    },
+    {
+      "pair": "vertical-7",
+      "A": "up",
+      "B": "down",
+      "reason": "A shows large upright eye surfaces and a longer visible face below them; B has lowered eyelids, more crown visible, and the chin tucked nearer the collar."
+    }
+  ]
+}

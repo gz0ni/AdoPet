@@ -1,0 +1,4 @@
+/core/pet-core
+*.exe
+dist/
+.DS_Store

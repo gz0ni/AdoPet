@@ -1,0 +1,9 @@
+{
+  "id": "pet_6af65eaf5a6c8191a230c8a5c2a81033",
+  "name": "Chibi Ado",
+  "description": "Чиби Адо с тёмными волосами, бирюзовыми прядями и голубыми глазами.",
+  "is_custom": true,
+  "is_active": true,
+  "verified_by": "select_pet and complete list_pets pagination",
+  "sprite_sha256": "f7a5c1da85977328848ff8dc73cb3a7332d0025f65e8450511e294a6059064d2"
+}

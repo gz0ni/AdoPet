@@ -1,0 +1,9 @@
+{
+  "reason": "Match resting scale to airborne jump; each row shares a fixed transform across all its frames.",
+  "seated_rows_scale": 0.86,
+  "transform": [
+    13,
+    28
+  ],
+  "jump_unchanged": true
+}

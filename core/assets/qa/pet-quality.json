@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "atlas": "/Users/gz0ni/Documents/Codex/2026-11-13/pets-plugin-work-pets-openai-curated-2/ado-run/final/spritesheet-extended.png",
+  "encoded_bytes": 2641924,
+  "sha256": "f7a5c1da85977328848ff8dc73cb3a7332d0025f65e8450511e294a6059064d2",
+  "jump": {
+    "idle_baseline": 202,
+    "jump_baselines": [
+      202,
+      187,
+      166,
+      186,
+      202
+    ],
+    "airborne_lift_pixels": 36,
+    "landing_delta_pixels": 0
+  },
+  "look_registration": {
+    "neutral_center_x": 95.0,
+    "look_centers_x": [
+      95.0,
+      94.5,
+      94.0,
+      93.0,
+      93.0,
+      95.0,
+      95.5,
+      94.5,
+      94.5,
+      94.5,
+      93.5,
+      93.5,
+      93.5,
+      94.5,
+      94.5,
+      95.0
+    ],
+    "look_widths": [
+      116,
+      111,
+      108,
+      106,
+      106,
+      108,
+      109,
+      109,
+      115,
+      113,
+      113,
+      113,
+      113,
+      113,
+      113,
+      112
+    ],
+    "maximum_center_drift_pixels": 2.0,
+    "maximum_width_ratio": 1.0943396226415094
+  },
+  "errors": [],
+  "warnings": [
+    "look direction 022.5 accepted with a reviewed warning",
+    "look direction 067.5 accepted with a reviewed warning",
+    "look direction 157.5 accepted with a reviewed warning",
+    "look direction 202.5 accepted with a reviewed warning",
+    "look direction 247.5 accepted with a reviewed warning",
+    "look direction 337.5 accepted with a reviewed warning",
+    "090->112.5 diff is a local outlier (1016 pixels vs neighbor average 606)",
+    "157.5->180 diff is a local outlier (1669 pixels vs neighbor average 742)"
+  ]
+}

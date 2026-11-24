@@ -1,0 +1,122 @@
+{
+  "directions": [
+    {
+      "label": "000",
+      "expected": "up",
+      "observed": "up",
+      "verdict": "pass",
+      "evidence": "Face pitched upward, chin raised and cyan eyes high beneath lifted bangs."
+    },
+    {
+      "label": "022.5",
+      "expected": "up-right",
+      "observed": "up-right",
+      "verdict": "warning",
+      "evidence": "Chin remains raised and face/eye pair shifts slightly screen-right; right facial edge narrows."
+    },
+    {
+      "label": "045",
+      "expected": "up-right",
+      "observed": "up-right",
+      "verdict": "pass",
+      "evidence": "Face turned screen-right and tilted upward, visible raised chin and high cyan eye surfaces."
+    },
+    {
+      "label": "067.5",
+      "expected": "up-right",
+      "observed": "up-right",
+      "verdict": "warning",
+      "evidence": "Clear screen-right face turn with slight upward face plane and eyes above the level right pose."
+    },
+    {
+      "label": "090",
+      "expected": "right",
+      "observed": "right",
+      "verdict": "pass",
+      "evidence": "Face surface and chin point screen-right; near eye is right of head centre and far eye is foreshortened."
+    },
+    {
+      "label": "112.5",
+      "expected": "down-right",
+      "observed": "down-right",
+      "verdict": "pass",
+      "evidence": "Rightward head yaw persists while chin and cyan eye surfaces lower under the bangs."
+    },
+    {
+      "label": "135",
+      "expected": "down-right",
+      "observed": "down-right",
+      "verdict": "pass",
+      "evidence": "Bowed head exposes upper hair while both visible eye surfaces cluster lower on the screen-right face."
+    },
+    {
+      "label": "157.5",
+      "expected": "down-right",
+      "observed": "down-right",
+      "verdict": "warning",
+      "evidence": "Strong downward bow with low eyes under bangs and subtle remaining screen-right face yaw."
+    },
+    {
+      "label": "180",
+      "expected": "down",
+      "observed": "down",
+      "verdict": "pass",
+      "evidence": "Head bowed symmetrically, crown dominates and both cyan eyes are low under bangs with lowered chin."
+    },
+    {
+      "label": "202.5",
+      "expected": "down-left",
+      "observed": "down-left",
+      "verdict": "warning",
+      "evidence": "Head remains bowed; face plane and low cyan eyes shift slightly to screen-left."
+    },
+    {
+      "label": "225",
+      "expected": "down-left",
+      "observed": "down-left",
+      "verdict": "pass",
+      "evidence": "Face yaw is screen-left and eyes sit low beneath the leftward sloping fringe."
+    },
+    {
+      "label": "247.5",
+      "expected": "down-left",
+      "observed": "down-left",
+      "verdict": "warning",
+      "evidence": "Strong screen-left yaw plus a modest bowed chin and lowered eyelids relative to level left pose."
+    },
+    {
+      "label": "270",
+      "expected": "left",
+      "observed": "left",
+      "verdict": "pass",
+      "evidence": "Face/chin point screen-left and visible cyan eye surfaces occupy left side of head; far side is occluded."
+    },
+    {
+      "label": "292.5",
+      "expected": "up-left",
+      "observed": "up-left",
+      "verdict": "pass",
+      "evidence": "Leftward face yaw persists with chin lifted and eye surfaces higher than level left pose."
+    },
+    {
+      "label": "315",
+      "expected": "up-left",
+      "observed": "up-left",
+      "verdict": "pass",
+      "evidence": "Raised chin, higher cyan eyes and clear face yaw to screen-left expose more of the pale face."
+    },
+    {
+      "label": "337.5",
+      "expected": "up-left",
+      "observed": "up-left",
+      "verdict": "warning",
+      "evidence": "Strong upward pitch with high eye surfaces and subtle remaining screen-left yaw approaching up."
+    }
+  ],
+  "continuity_review": {
+    "090->112.5": "Metric outlier comes from deliberate change in pitch and bang occlusion; anchored shoes and torso remain stable, no visible reversal or scale pop.",
+    "157.5->180": "Source-family boundary changes head silhouette modestly; centre drift1.5px and area ratio1.074, both poses bowed in the correct ordered arc, no conspicuous registration snap.",
+    "337.5->000": "Raised-face loop closes coherently with stable torso and shoes."
+  },
+  "normal_size": "Reviewed neutral and all16 final encoded cells at192x208; soft intermediate directions accepted only with both axes visible."
+}

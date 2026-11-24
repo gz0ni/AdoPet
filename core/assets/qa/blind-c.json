@@ -1,0 +1,88 @@
+{
+  "pairs": [
+    {
+      "pair": "horizontal-1",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "A's face and eye group sit slightly left within the hair, with more right cheek and ear exposed; B's face and eye group shift right, with the left ear exposed."
+    },
+    {
+      "pair": "horizontal-2",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "A's chin and eye group point left and the right ear is exposed; B's chin and eye group point right and the left ear is exposed."
+    },
+    {
+      "pair": "horizontal-3",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "A shows a broad left side of hair and exposed left ear with the eyes on the right face plane; B has the corresponding exposed right ear and eyes on the left face plane."
+    },
+    {
+      "pair": "horizontal-4",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "A's chin and visible face project right from the left ear; B's visible face projects left from the right ear."
+    },
+    {
+      "pair": "horizontal-5",
+      "A": "screen-right",
+      "B": "screen-left",
+      "reason": "Both heads pitch downward, but A's eye line and chin shift right with its left ear exposed, while B's eye line and chin shift left with its right ear exposed."
+    },
+    {
+      "pair": "horizontal-6",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "A's lowered eyes and face opening extend left, showing the right ear; B's lowered face opening extends right, showing the left ear."
+    },
+    {
+      "pair": "horizontal-7",
+      "A": "screen-left",
+      "B": "screen-right",
+      "reason": "At deep downward pitch, A's eye group is left of the hair dome center and its right ear remains visible; B's eye group and chin shift right, with its left ear visible."
+    },
+    {
+      "pair": "vertical-1",
+      "A": "up",
+      "B": "down",
+      "reason": "A has high open eyes and a large exposed lower face with an elevated chin; B's crown dominates and the eyes are compressed into a low band beneath the bangs."
+    },
+    {
+      "pair": "vertical-2",
+      "A": "down",
+      "B": "up",
+      "reason": "A's eyes sit low beneath the bangs and its chin tucks toward the collar; B's open eyes sit high above a broad exposed lower face."
+    },
+    {
+      "pair": "vertical-3",
+      "A": "down",
+      "B": "up",
+      "reason": "A's lowered eye line is partly hidden by the bangs with a tucked chin; B's eyes are fully open on a lifted face with more chin area exposed."
+    },
+    {
+      "pair": "vertical-4",
+      "A": "down",
+      "B": "up",
+      "reason": "A's bangs descend across the eyes and the chin approaches the collar; B exposes a taller face and high, fully open eyes."
+    },
+    {
+      "pair": "vertical-5",
+      "A": "down",
+      "B": "up",
+      "reason": "A has a large visible crown and narrow eye band at the bottom of the head; B's eyes sit high and the chin lifts away from the collar."
+    },
+    {
+      "pair": "vertical-6",
+      "A": "up",
+      "B": "down",
+      "reason": "A shows high open eyes and an elongated exposed lower face; B shows lowered half-covered eyes with the chin tucked near the collar."
+    },
+    {
+      "pair": "vertical-7",
+      "A": "up",
+      "B": "down",
+      "reason": "A's visible eye line is higher and the lower face is extended; B's eye line sits lower beneath the bangs and its face is shortened by downward pitch."
+    }
+  ]
+}
