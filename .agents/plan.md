@@ -23,7 +23,7 @@ claude-pet/
 │   │   ├── sprite/          # spritesheet loading, frame slicing, animation player
 │   │   ├── state/           # event → pet state machine
 │   │   ├── server/          # HTTP API over a unix socket
-│   │   ├── window/          # Ebiten game loop, transparent window, drag, click-through
+│   │   ├── window/          # native transparent window (Win32 / Cocoa), drag, click-through
 │   │   ├── tray/            # tray / menu-bar icon and menu
 │   │   ├── hotkeys/         # global hotkeys
 │   │   ├── autostart/       # launch at login (registry / LaunchAgent)
@@ -102,19 +102,18 @@ Memory: decode the sheet once (≈14 MB RGBA at full size). Pre-scale to the con
 ## 3. pet-core (Go)
 
 ### Dependencies
-- `github.com/hajimehoshi/ebiten/v2`: window + rendering (transparent, undecorated, floating, mouse passthrough).
-- `fyne.io/systray`: tray / menu bar. Use `systray.RunWithExternalLoop` so it coexists with Ebiten's main-thread loop.
+- `fyne.io/systray`: tray / menu bar. Use `systray.RunWithExternalLoop` so it coexists with the Cocoa main-thread loop.
 - `golang.design/x/hotkey`: global hotkeys (on macOS must be registered on the main thread; use `mainthread`).
 - `github.com/fsnotify/fsnotify`: watch config.json.
 - stdlib `net/http`, `encoding/json`, `embed`, `log/slog`.
 
 ### Window
-- Windows (decided 2026-11-24): own Win32 layered window (`UpdateLayeredWindow` + DIB, no GPU), see `project-decisions.md`. The Ebiten notes below apply to macOS.
-- Ebiten options: `ScreenTransparent: true`, `WindowDecorated(false)`, `WindowFloating(true)`, `SetRunnableOnUnfocused(true)`, `SetTPS` low (e.g. 30), `SetVsyncEnabled(false)`.
-- Skip redraw when the frame hasn't changed (`ebiten.SetScreenClearedEveryFrame(false)` + dirty flag) to keep CPU near 0.
+- Windows (decided 2026-11-24): own Win32 layered window (`UpdateLayeredWindow` + DIB, no GPU), see `project-decisions.md`.
+- macOS (decided 2026-11-24): own Cocoa `NSPanel` + `CALayer` contents via cgo, no Ebiten, see `project-decisions.md`.
+- Redraw only when the frame changes, timer at the animation FPS, to keep CPU near 0.
 - Drag to move (left button); position saved to config.
-- Optional click-through mode (`SetWindowMousePassthrough`), toggled by a hotkey.
-- Hide from taskbar/Dock: macOS `LSUIElement=1` in Info.plist; Windows: tool-window style (small platform shim via `golang.org/x/sys/windows` if Ebiten doesn't expose it).
+- Optional click-through mode (`WS_EX_TRANSPARENT` / `ignoresMouseEvents`), toggled by a hotkey.
+- Hide from taskbar/Dock: macOS activation policy Accessory (plus `LSUIElement=1` in the bundle); Windows: `WS_EX_TOOLWINDOW`.
 
 ### State machine (`internal/state`)
 Priority-based; higher priority wins, transient states return to the base state.
@@ -264,7 +263,7 @@ Both binaries ship together; core finds settings next to itself.
 **macOS**
 - `ClaudePet.app` = core as the main executable (`LSUIElement=1`), Flutter settings app embedded at `Contents/Helpers/Settings.app`.
 - Universal binary: `GOARCH=amd64` + `arm64` → `lipo`; `flutter build macos --release`.
-- Ebiten on macOS needs cgo, so build on a Mac (or the macOS CI runner).
+- The Cocoa backend needs cgo, so build on a Mac (or the macOS CI runner); `lipo` the amd64 and arm64 builds.
 - `create-dmg` → `ClaudePet.dmg`. Unsigned builds need right-click → Open the first time; signing + notarization can come later with an Apple Developer account.
 
 **CI**: GitHub Actions matrix (`windows-latest`, `macos-latest`) producing the installer and dmg as artifacts on tag.
@@ -294,7 +293,6 @@ Both binaries ship together; core finds settings next to itself.
 
 ## 9. Risks and open questions
 
-- Ebiten transparency/floating behavior on each OS: prototype M1 on both machines first. If Windows tool-window style isn't reachable, add a small `x/sys/windows` shim.
-- Ebiten and systray both want the main thread on macOS: confirm `RunWithExternalLoop` works with Ebiten's loop early in M3.
+- The Cocoa loop (`[NSApp run]`) and systray both want the main thread on macOS: confirm `RunWithExternalLoop` (or an own `NSStatusItem`) early in M3.
 - Hook payload format can change between Claude Code versions: parse defensively, ignore unknown fields.
 - Claude chat (non-Code) gives no events. Out of scope, so the pet stays idle there.

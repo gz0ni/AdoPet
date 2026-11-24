@@ -13,3 +13,10 @@ func blitBGRA(dst []byte, src *image.RGBA, r image.Rectangle) {
 		}
 	}
 }
+
+func blitRGBA(dst []byte, src *image.RGBA, r image.Rectangle) {
+	n := r.Dx() * 4
+	for y := range r.Dy() {
+		copy(dst[y*n:(y+1)*n], src.Pix[src.PixOffset(r.Min.X, r.Min.Y+y):])
+	}
+}

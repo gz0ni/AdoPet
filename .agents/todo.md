@@ -18,11 +18,13 @@ Task checklist. The agent maintains this file: creates items, marks them done, k
 
 ## Open
 
-- [~] M1: pet on screen — Windows done and checked by the user (smooth drag); pending: macOS run
+- [~] M1: pet on screen — Windows and macOS done and checked by the user; branch `m1-pet-window` not merged yet
 - [ ] Handle `WM_DPICHANGED` in the Win32 backend (M7)
-- [ ] M1 on macOS: build with cgo, check transparency, drag, RSS (Metal)
+- [x] M1 on macOS: build, transparency, idle loop, drag, saved position checked on Apple Silicon, macOS 27 (2026-11-24)
+- [ ] Run the Windows build on the Windows machine after Ebiten removal (`go mod tidy` changed `go.sum`)
+- [ ] Handle `backingScaleFactor` changes on macOS (M7)
 - [ ] M2: events — HTTP over `<dataDir>/pet.sock` (no port/token), stale-socket check + single instance, state machine with all animations, hooks and `CoreClient` on the socket, `curl` test, then a real Claude Code session (server reads the event name from `?event=`); verify AF_UNIX on macOS
-- [ ] M3: tray + hotkeys + autostart (confirm systray `RunWithExternalLoop` with Ebiten on macOS early)
+- [ ] M3: tray + hotkeys + autostart (confirm systray `RunWithExternalLoop` with the Cocoa `[NSApp run]` loop on macOS early)
 - [ ] M4: settings app — config repo, General + Animations pages on both UI kits, `/preview`, `/reload`
 - [ ] M5: Claude events page + hook installer (merge into `~/.claude/settings.json` with backup, uninstall)
 - [ ] M6: packaging — Inno Setup, dmg, CI artifacts on tag
@@ -37,6 +39,8 @@ Task checklist. The agent maintains this file: creates items, marks them done, k
 
 ## Done
 
+- [x] Cocoa `NSPanel` + `CALayer` backend on macOS replaces Ebiten; footprint 130 → 32 MB, CPU ≈ 0.1%, no Dock icon; Ebiten removed from `go.mod` (2026-11-24)
+- [x] golangci-lint v2.15.0 installed on the Mac, 0 issues (2026-11-24)
 - [x] Win32 layered-window backend for Windows replaces Ebiten there; memory 108 → 18 MB (2026-11-24)
 
 - [x] Create `.agents/` structure and `AGENTS.md` (2026-11-24)

@@ -29,8 +29,9 @@
 
 - `options.go`: `Options` shared by both backends.
 - `window_windows.go` + `win32_windows.go`: Windows backend without GPU. `WS_POPUP` with `WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE` (+ `WS_EX_TOPMOST`), per-monitor DPI v2, 32-bit top-down DIB section updated by `UpdateLayeredWindow(ULW_ALPHA)`. `SetTimer` at the animation FPS redraws only on frame change. Drag through `WM_NCHITTEST → HTCAPTION`; fully transparent pixels pass clicks through. Position saved on `WM_EXITSIZEMOVE`. Monitors from `EnumDisplayMonitors`, primary first; coordinates relative to the work area (taskbar excluded), config offsets in DIP.
-- `pixels.go`: `blitBGRA` (premultiplied RGBA → BGRA for the DIB).
-- `window_other.go` (`!windows`): Ebiten game. Pre-scales the sheet to `scale × deviceScaleFactor`, `Layout` returns physical cell size (crisp on HiDPI), window size is in DIP. Transparent, undecorated, floating, `SkipTaskbar`, `InitUnfocused`. `FPSModeVsyncOffMinimum` + `ScheduleFrame` ticker at the animation FPS; draws only on frame change. Left-drag moves the window; on release reports the anchor-relative position and monitor index.
+- `pixels.go`: `blitBGRA` (premultiplied RGBA → BGRA for the DIB), `blitRGBA` (frame copy for `CGImage`).
+- `window_darwin.go` + `cocoa_darwin.m/.h` + `screen_darwin.go`: macOS backend (cgo, Objective-C, MRC). `init` locks the main goroutine to the main thread. Activation policy Accessory (no Dock icon, no menu bar). Borderless non-activating `NSPanel` (clear background, no shadow, `NSFloatingWindowLevel` when on top, joins all Spaces). Each frame of the current animation is a `CGImage` (premultiplied RGBA, pre-scaled to `scale × backingScaleFactor`) set as `CALayer.contents`; the Go sheet is freed after upload. `NSTimer` at the animation FPS calls `goPetTick`, which swaps the layer contents only on frame change. Drag is manual (`mouseDown`/`mouseDragged`, `acceptsFirstMouse`); `mouseUp` after a move calls `goPetMoved`. Screens from `[NSScreen screens]` (menu-bar screen first), coordinates relative to `visibleFrame` (menu bar and Dock excluded), y flipped from Cocoa's bottom-left origin to the config's top-left offsets.
+- Removed: Ebiten backend (was `window_other.go`). Pre-scales the sheet to `scale × deviceScaleFactor`, `Layout` returns physical cell size (crisp on HiDPI), window size is in DIP. Transparent, undecorated, floating, `SkipTaskbar`, `InitUnfocused`. `FPSModeVsyncOffMinimum` + `ScheduleFrame` ticker at the animation FPS; draws only on frame change. Left-drag moves the window; on release reports the anchor-relative position and monitor index.
 - `placement.go`: `place` (anchor offset → monitor coords, clamped on-screen) and `relative` (inverse).
 
 ### core/internal/{state,server,tray,hotkeys,autostart}
@@ -58,7 +59,7 @@
 - Windows: `WM_DPICHANGED` is not handled; the pet keeps its pixel size on a monitor with another DPI.
 - Device scale factor is read once at startup; moving to a monitor with another DPI is not handled (M7).
 - Click-through and fsnotify config watch not implemented.
-- macOS (Ebiten backend) only checked with `GOOS=darwin go vet`; not run, RSS unknown.
+- macOS: `backingScaleFactor` changes after start (moving to a non-Retina monitor) are not handled (M7). The cgo backend cannot be cross-checked from Windows.
 - Settings pages have no content; no `ConfigRepository`; no «Pet is not running» banner.
 - `CoreClient` uses port + `X-Pet-Token`; M2 switches it to the unix socket.
 - `tools/slice_sprites.py` is a placeholder; `packaging/` is empty.

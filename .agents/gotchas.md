@@ -16,6 +16,23 @@ Traps and pitfalls the agent has stepped on in this project. Log a gotcha immedi
 
 <!-- New entries go here, newest first. -->
 
+### macOS RSS overstates pet-core memory (2026-11-24)
+
+- `ps` RSS stays ~115 MB for the Cocoa backend while `vmmap` physical footprint is ~32 MB.
+- Root cause: RSS counts shared, clean pages of system frameworks (AppKit, Core Animation).
+- Avoid: judge the 40 MB budget on macOS by `vmmap --summary` physical footprint (what Activity Monitor shows as Memory).
+
+### Agent cannot screenshot a bare pet-core binary on macOS (2026-11-24)
+
+- `screencapture -l <id>` failed (`could not create image from window`); computer-use cannot grant pet-core because it has no bundle.
+- Root cause: the shell lacks Screen Recording permission; computer-use works only with bundled apps.
+- Avoid: check the window with a CGWindowList script (bounds, layer, onscreen) and ask the user for visual checks, or wrap pet-core in a `.app` bundle.
+
+### macOS CPU at startup looks high (2026-11-24)
+
+- `ps` right after launch showed ~10% CPU; after ~10 s it settles to 0.3–1.6%.
+- Avoid: measure CPU and memory after at least 10 s, average several samples.
+
 ### Unix socket bind fails with a long path (2026-11-24)
 
 - `net.Listen("unix", <scratchpad>\pet.sock)` on Windows failed with `bind: invalid argument`.

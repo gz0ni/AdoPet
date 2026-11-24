@@ -2,7 +2,7 @@
 
 Desktop pet (Chibi Ado) that reacts to Claude Code activity via hooks.
 
-- `core/`: **pet-core** (Go, Ebiten). Pet window, tray, hotkeys, local HTTP API.
+- `core/`: **pet-core** (Go, native Win32 / Cocoa window). Pet window, tray, hotkeys, local HTTP API.
 - `settings/`: **settings** (Flutter, `fluent_ui` on Windows / `macos_ui` on macOS). Launched on demand.
 - `hooks/`: Claude Code hook scripts and `settings.json` snippets.
 - `packaging/`, `.github/workflows/`: installers and CI.

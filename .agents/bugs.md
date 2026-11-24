@@ -17,6 +17,20 @@ Known bugs found in this project and how they were fixed, so they do not reappea
 
 <!-- New entries go here, newest first. -->
 
+### pet-core uses ~130 MB on macOS, target 40 MB (2026-11-24) — fixed
+
+- Symptom: on Apple Silicon RSS ≈ 150 MB, physical footprint ≈ 130 MB (peak 179 MB) for a 96×104 pt window.
+- Root cause: Ebiten Metal backend; `vmmap` shows ~38 MB `IOAccelerator (graphics)` plus Metal/AppKit malloc.
+- Fix applied: own Cocoa `NSPanel` + `CALayer` backend; footprint ≈ 32 MB (peak 49 MB at startup).
+- How to prevent recurrence: measure footprint with `vmmap --summary` after any macOS rendering change.
+
+### pet-core shows a Dock icon on macOS (2026-11-24) — fixed
+
+- Symptom: Dock icon appears; `lsappinfo` reports `type="Foreground"`.
+- Root cause: Ebiten `RunGameOptions.SkipTaskbar` only works on Windows; activation policy stays Regular.
+- Fix applied: `petInit` sets `NSApplicationActivationPolicyAccessory`; `lsappinfo` reports `UIElement`.
+- How to prevent recurrence: set `NSApplicationActivationPolicyAccessory` (or `LSUIElement` in Info.plist for the bundle).
+
 ### Ebiten build saved a minimized window position (2026-11-24) — fixed
 
 - Symptom: `config.json` had `position.y = -32817`; next start put the pet in the top-right corner.

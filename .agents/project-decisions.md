@@ -17,6 +17,13 @@ Recorded decisions and the reasoning behind them, so future work does not silent
 
 <!-- New entries go here, newest first. -->
 
+### Own Cocoa window on macOS, Ebiten removed (2026-11-24)
+
+- Decision: macOS backend is a cgo/Objective-C borderless non-activating `NSPanel` whose layer shows one pre-built `CGImage` per frame; Ebiten is dropped from the module.
+- Reason: Ebiten (Metal) used ~130 MB physical footprint and showed a Dock icon; the Cocoa window runs at ~32 MB, ≈ 0.1% CPU, no Dock icon, and the binary shrank from 11 to 5.3 MB. With both OS on native backends Ebiten had no users left.
+- Alternatives considered: keep Ebiten and relax the 40 MB target; `NSView drawRect` with a CPU backing store (more code, no gain over layer contents).
+- Consequences: macOS builds need cgo and a Mac or the macOS CI runner; `GOOS=darwin` cross-vet from Windows no longer covers the window package; tray in M3 must share the `[NSApp run]` main-thread loop; the "redraw on demand with minimum FPS mode" decision is obsolete.
+
 ### Own Win32 layered window on Windows, Ebiten only on macOS (2026-11-24)
 
 - Decision: `internal/window` has two backends behind one `Run(Options)`: Win32 (`UpdateLayeredWindow` + DIB, no GPU) on Windows, Ebiten elsewhere.
@@ -31,7 +38,7 @@ Recorded decisions and the reasoning behind them, so future work does not silent
 - Alternatives considered: `127.0.0.1` port + `X-Pet-Token` (simpler tooling, weaker by design); named pipes on Windows (would need a different transport per OS; AF_UNIX works on Windows 10 1803+, checked with `curl.exe` and Dart).
 - Consequences: Windows minimum is 10 1803; hook scripts and `CoreClient` change in M2; `server.port` leaves the config schema; socket path must stay under 104 bytes.
 
-### Redraw on demand with the deprecated minimum FPS mode (2026-11-24)
+### Redraw on demand with the deprecated minimum FPS mode (2026-11-24) — superseded
 
 - Decision: `ebiten.SetFPSMode(FPSModeVsyncOffMinimum)` plus a ticker calling `ScheduleFrame` at the animation FPS.
 - Reason: drops idle CPU from ~4.3% to ~0% of a core; input still wakes the loop for dragging.
@@ -75,7 +82,7 @@ Recorded decisions and the reasoning behind them, so future work does not silent
 
 ### Two processes: Go core + Flutter settings (2026-11-24)
 
-- Decision: always-running pet in Go (Ebiten), settings UI in Flutter launched on demand.
+- Decision: always-running pet in Go (native window per OS), settings UI in Flutter launched on demand.
 - Reason: small idle footprint for the pet; native-looking settings on both OS.
 - Alternatives considered: see [plan.md](plan.md).
 - Consequences: they communicate only through config.json and the local HTTP API.
